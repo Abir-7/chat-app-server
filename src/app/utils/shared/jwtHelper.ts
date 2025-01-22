@@ -13,4 +13,8 @@ const verifyRefreshToken = (refreshToken: string) => {
     );
   });
 };
-export const JwtHelper = { verifyRefreshToken };
+
+const generateToken = (payload: object, secret: string, expiresIn: string) => {
+  return jwt.sign(payload, secret, { expiresIn });
+};
+export const JwtHelper = { verifyRefreshToken, generateToken };

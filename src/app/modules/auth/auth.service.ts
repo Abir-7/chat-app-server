@@ -1,5 +1,6 @@
 import { config } from "../../config";
 import AppError from "../../errors/AppError";
+import { JwtHelper } from "../../utils/shared/jwtHelper";
 import { User } from "../user/user.model";
 import httpCode from "http-status";
 import jwt from "jsonwebtoken";
@@ -20,9 +21,11 @@ const loginUser = async (data: { email: string; password: string }) => {
     userId: user._id,
     userRole: user.role,
   };
-  const token = jwt.sign(jwtPayload, config.jwt_secret as string, {
-    expiresIn: config.jwt_expires_in,
-  });
+  const token = JwtHelper.generateToken(
+    jwtPayload,
+    config.jwt_secret as string,
+    config.jwt_expires_in as string
+  );
 
   const refreshToken = jwt.sign(
     jwtPayload,
