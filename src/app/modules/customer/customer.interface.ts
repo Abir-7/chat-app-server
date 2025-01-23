@@ -6,4 +6,5 @@ export interface ICustomer {
   contactNo: number;
   address: string;
   user: Types.ObjectId;
+  image: string;
 }

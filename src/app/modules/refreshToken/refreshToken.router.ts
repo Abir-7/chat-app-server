@@ -2,5 +2,5 @@ import { Router } from "express";
 import { RefreshTokenController } from "./refreshToken.controller";
 
 const router = Router();
-router.get("/refreshToken", RefreshTokenController.getRefreshToken);
-export const refreshTokenRouter = router;
+router.get("/get-token", RefreshTokenController.getRefreshToken);
+export const TokenRouter = router;

@@ -16,6 +16,7 @@ export interface IUser {
 }
 
 export interface ICreateCustomer {
+  image: string;
   password: string;
   customerData: ICustomer;
 }

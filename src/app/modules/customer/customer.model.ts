@@ -8,6 +8,7 @@ const CustomerSchema = new Schema<ICustomer>(
     contactNo: { type: Number, required: true },
     address: { type: String, required: true },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    image: { type: String, required: true },
   },
   {
     timestamps: true,

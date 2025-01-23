@@ -27,13 +27,12 @@ const loginUser = async (data: { email: string; password: string }) => {
     config.jwt_expires_in as string
   );
 
-  const refreshToken = jwt.sign(
+  const refreshToken = JwtHelper.generateToken(
     jwtPayload,
     config.jwt_refresh_secret as string,
-    {
-      expiresIn: config.jwt_refresh_expires_in,
-    }
+    config.jwt_refresh_expires_in as string
   );
+
   return { token, refreshToken };
 };
 export const AuthService = { loginUser };

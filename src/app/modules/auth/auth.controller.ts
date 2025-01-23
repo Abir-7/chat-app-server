@@ -5,7 +5,7 @@ import { AuthService } from "./auth.service";
 
 const logInUser = catchAsync(async (req, res, next) => {
   const result = await AuthService.loginUser(req.body);
-
+  console.log(result.refreshToken, "refreshToken");
   res.cookie("refreshToken", result.refreshToken, {
     secure: config.node_env === "production",
     httpOnly: true,

@@ -1,20 +1,20 @@
 import jwt from "jsonwebtoken";
-import { config } from "../../config";
-import { IAuthData } from "../../middleware/Auth/auth.interface";
-const verifyRefreshToken = (refreshToken: string) => {
-  return new Promise<string | IAuthData>((resolve, reject) => {
-    jwt.verify(
-      refreshToken,
-      config.jwt_refresh_secret as string,
-      (err, decoded) => {
-        if (err) reject("Invalid or expired refresh token");
-        else resolve(decoded as IAuthData);
+
+const verifyToken = <T>(token: string, secret: string): Promise<T> => {
+  return new Promise<T>((resolve, reject) => {
+    console.log(token, "Token being verified");
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) {
+        console.error("JWT Verification Error:", err.message); // Log error for debugging
+        reject("Invalid or expired token");
+      } else {
+        resolve(decoded as T);
       }
-    );
+    });
   });
 };
 
 const generateToken = (payload: object, secret: string, expiresIn: string) => {
   return jwt.sign(payload, secret, { expiresIn });
 };
-export const JwtHelper = { verifyRefreshToken, generateToken };
+export const JwtHelper = { verifyToken, generateToken };
