@@ -5,9 +5,10 @@ import jwt from "jsonwebtoken";
 import { config } from "../../config";
 import { IAuthData } from "./auth.interface";
 import { User } from "../../modules/user/user.model";
+import { TUserRole } from "../../modules/user/user.interface";
 
 const auth =
-  (...roles: string[]) =>
+  (...roles: TUserRole[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const tokenWithBearer = req.headers.authorization;
     if (!tokenWithBearer) {

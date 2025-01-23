@@ -46,6 +46,12 @@ const createUser = async (userData: ICreateCustomer) => {
 //   return result;
 // };
 
+const getAllUser = async () => {
+  const users = await User.find();
+  return users;
+};
+
 export const UserServices = {
   createUser,
+  getAllUser,
 };

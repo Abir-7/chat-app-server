@@ -12,7 +12,7 @@ const createUser = catchAsync(async (req, res, next) => {
 
   const value = {
     ...req.body,
-    photo: image,
+    image,
   };
 
   const userData = await UserServices.createUser(value);
@@ -25,6 +25,17 @@ const createUser = catchAsync(async (req, res, next) => {
   });
 });
 
+const getAllUser = catchAsync(async (req, res, next) => {
+  const users = await UserServices.getAllUser();
+  sendResponse(res, {
+    data: users,
+    statusCode: 200,
+    success: true,
+    message: "All users fetched successfully",
+  });
+});
+
 export const UserController = {
   createUser,
+  getAllUser,
 };
