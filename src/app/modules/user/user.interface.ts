@@ -13,6 +13,7 @@ export interface IUser {
   isBlocked: boolean;
   isDeleted: boolean;
   isVerified: boolean;
+  customer: any;
 }
 
 export interface ICreateCustomer {

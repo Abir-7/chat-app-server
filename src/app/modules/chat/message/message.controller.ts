@@ -1,17 +1,17 @@
-import AppError from "../../errors/AppError";
-import catchAsync from "../../utils/shared/catchAsync";
-import sendResponse from "../../utils/shared/sendResponse";
+import AppError from "../../../errors/AppError";
+import catchAsync from "../../../utils/shared/catchAsync";
+import sendResponse from "../../../utils/shared/sendResponse";
 import { MessageService } from "./message.service";
 
 // Save a chat message
 export const saveChatMessage = catchAsync(async (req, res) => {
-  const { senderId, receiverId, message } = req.body;
+  const { senderId, chatId, content } = req.body;
 
-  const chatMessage = await MessageService.saveChatMessage({
+  const chatMessage = await MessageService.saveChatMessage(
     senderId,
-    receiverId,
-    message,
-  });
+    chatId,
+    content
+  );
 
   sendResponse(res, {
     success: true,

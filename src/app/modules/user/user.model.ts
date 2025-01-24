@@ -40,7 +40,7 @@ export const userSchema = new Schema<IUser, IUserModel>(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toObject: { virtuals: true }, id: false }
 );
 
 userSchema.pre("save", async function (next) {

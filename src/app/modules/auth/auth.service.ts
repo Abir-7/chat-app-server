@@ -3,7 +3,7 @@ import AppError from "../../errors/AppError";
 import { JwtHelper } from "../../utils/shared/jwtHelper";
 import { User } from "../user/user.model";
 import httpCode from "http-status";
-import jwt from "jsonwebtoken";
+
 const loginUser = async (data: { email: string; password: string }) => {
   const { email, password } = data;
 
@@ -12,7 +12,7 @@ const loginUser = async (data: { email: string; password: string }) => {
   if (!user) {
     throw new AppError(httpCode.NOT_FOUND, "User not found");
   }
-  console.log(user);
+
   if (await User.passwordMatch(user.password, password)) {
     throw new AppError(httpCode.UNAUTHORIZED, "Invalid password");
   }
