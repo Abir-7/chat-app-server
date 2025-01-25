@@ -11,6 +11,7 @@ const auth =
   (...roles: TUserRole[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const tokenWithBearer = req.headers.authorization;
+
     if (!tokenWithBearer) {
       throw new AppError(httpCode.UNAUTHORIZED, "You are not authorized");
     }
@@ -39,7 +40,7 @@ const auth =
         throw new AppError(httpCode.UNAUTHORIZED, "You are not authorized");
       }
 
-      req.user = decoded;
+      req.user = decoded as IAuthData;
 
       next();
     } catch (error) {

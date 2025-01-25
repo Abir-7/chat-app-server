@@ -5,6 +5,7 @@ import { UserController } from "./user.controller";
 import upload from "../../middleware/FileUploadHandler";
 import { parseField } from "../../middleware/parseDataMiddleware";
 import fileUploadHandler from "../../middleware/FileUploadHandler";
+import auth from "../../middleware/Auth/auth";
 
 const router = Router();
 
@@ -22,6 +23,6 @@ router.post(
   UserController.createUser
 );
 
-router.get("/get-all-user", UserController.getAllUser);
+router.get("/get-all-user", auth("USER"), UserController.getAllUserForChat);
 
 export const UserRouter = router;

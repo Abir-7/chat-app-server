@@ -46,12 +46,17 @@ const createUser = async (userData: ICreateCustomer) => {
 //   return result;
 // };
 
-const getAllUser = async () => {
-  const users = await User.find();
+const getAllUserForChat = async (userEmail: string) => {
+  console.log(userEmail);
+  const users = await User.find({
+    role: "USER",
+    email: { $ne: userEmail },
+  }).populate("customer");
+
   return users;
 };
 
 export const UserServices = {
   createUser,
-  getAllUser,
+  getAllUserForChat,
 };

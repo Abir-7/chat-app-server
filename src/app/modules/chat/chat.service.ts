@@ -8,7 +8,7 @@ const createOnetoOneChat = async (userId1: string, userId2: string) => {
   });
 
   if (existingChat) {
-    return "";
+    return existingChat;
   } else {
     const chat = await Chat.create({
       isGroup: false,

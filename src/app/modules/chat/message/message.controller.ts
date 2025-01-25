@@ -23,17 +23,8 @@ export const saveChatMessage = catchAsync(async (req, res) => {
 
 // Get chat messages between two users
 export const getChatMessages = catchAsync(async (req, res) => {
-  const { senderId, receiverId } = req.query;
-  console.log(senderId, receiverId);
-  if (!senderId || !receiverId) {
-    throw new AppError(500, "SenderId and ReceiverId are required.");
-  }
-
-  const messages = await MessageService.getChatMessages(
-    senderId as string,
-    receiverId as string
-  );
-
+  const { chatId } = req.query;
+  const messages = await MessageService.getChatMessages(chatId as string);
   sendResponse(res, {
     success: true,
     statusCode: 200,

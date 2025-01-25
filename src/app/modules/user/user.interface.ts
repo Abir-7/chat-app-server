@@ -21,6 +21,7 @@ export interface ICreateCustomer {
   password: string;
   customerData: ICustomer;
 }
+
 export interface IUserModel extends Model<IUser> {
   passwordMatch(hashedPass: string, password: string): Promise<boolean>;
 }

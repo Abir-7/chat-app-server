@@ -1,8 +1,7 @@
-import app from "./app";
+import { app, server } from "./app";
 import { config } from "./app/config";
 import mongoose from "mongoose";
 
-let server: any;
 // Handle uncaught exceptions
 process.on("uncaughtException", (error: Error) => {
   console.error("Uncaught Exception:", error);
@@ -16,7 +15,7 @@ async function startServer() {
     console.log("MongoDB connected successfully");
 
     // Start the server
-    server = app.listen(config.port, () => {
+    server.listen(config.port, () => {
       console.log(`Example app listening on port ${config.port}`);
     });
   } catch (error) {

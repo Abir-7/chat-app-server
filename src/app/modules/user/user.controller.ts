@@ -25,8 +25,9 @@ const createUser = catchAsync(async (req, res, next) => {
   });
 });
 
-const getAllUser = catchAsync(async (req, res, next) => {
-  const users = await UserServices.getAllUser();
+const getAllUserForChat = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  const users = await UserServices.getAllUserForChat(user?.userEmail);
   sendResponse(res, {
     data: users,
     statusCode: 200,
@@ -37,5 +38,5 @@ const getAllUser = catchAsync(async (req, res, next) => {
 
 export const UserController = {
   createUser,
-  getAllUser,
+  getAllUserForChat,
 };

@@ -40,8 +40,20 @@ export const userSchema = new Schema<IUser, IUserModel>(
       default: false,
     },
   },
-  { timestamps: true, toObject: { virtuals: true }, id: false }
+  {
+    timestamps: true,
+    toObject: { virtuals: true },
+    id: false,
+    toJSON: { virtuals: true },
+  }
 );
+
+userSchema.virtual("customer", {
+  ref: "Customer", // The model to reference
+  localField: "_id", // The field in the User model that we're matching with
+  foreignField: "user", // The field in the Customer model that references the User
+  justOne: true, // Whether we expect a single document (true) or an array (false)
+});
 
 userSchema.pre("save", async function (next) {
   //check user
