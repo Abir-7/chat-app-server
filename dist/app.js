@@ -28,7 +28,7 @@ exports.app = app;
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 const corsOptions = {
-    origin: ["https://chatapp-client-beta.vercel.app", "*"], // Allow specific origin
+    origin: ["https://chatapp-client-beta.vercel.app", "http://localhost:3000"], // Allow specific origin
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
     credentials: true, // Allow credentials (cookies, authorization headers)
     optionsSuccessStatus: 200, // Legacy browser support
@@ -49,7 +49,7 @@ const server = http_1.default.createServer(app);
 exports.server = server;
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "https://chatapp-client-beta.vercel.app", // Allow all origins
+        origin: ["https://chatapp-client-beta.vercel.app", "http://localhost:3000"], // Allow all origins
         methods: ["GET", "POST"],
     },
 });
