@@ -16,7 +16,7 @@ exports.User = exports.userSchema = void 0;
 const mongoose_1 = require("mongoose");
 const user_constant_1 = require("./user.constant");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const config_1 = require("../../config");
 exports.userSchema = new mongoose_1.Schema({
     email: {
@@ -72,14 +72,14 @@ exports.userSchema.pre("save", function (next) {
             throw new AppError_1.default(400, "User already exist");
         }
         //password hash
-        this.password = yield bcrypt_1.default.hash(this.password.trim(), Number(config_1.config.bcrypt_salt_rounds));
+        this.password = yield bcryptjs_1.default.hash(this.password.trim(), Number(config_1.config.bcrypt_salt_rounds));
         next();
     });
 });
 exports.userSchema.statics.passwordMatch = function (hashedPass, password) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(hashedPass, password.trim());
-        return yield bcrypt_1.default.compare(hashedPass, password);
+        return yield bcryptjs_1.default.compare(hashedPass, password);
     });
 };
 exports.User = (0, mongoose_1.model)("User", exports.userSchema);
