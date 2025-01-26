@@ -27,7 +27,7 @@ const app = (0, express_1.default)();
 exports.app = app;
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)({ origin: "*" }));
+app.use((0, cors_1.default)({ origin: "https://chatapp-client-beta.vercel.app" }));
 ////////////////
 app.use(express_1.default.static("uploads"));
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -43,7 +43,7 @@ const server = http_1.default.createServer(app);
 exports.server = server;
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "*", // Allow all origins
+        origin: "https://chatapp-client-beta.vercel.app", // Allow all origins
         methods: ["GET", "POST"],
     },
 });

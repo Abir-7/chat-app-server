@@ -15,7 +15,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "https://chatapp-client-beta.vercel.app" }));
 
 ////////////////
 app.use(express.static("uploads"));
@@ -36,7 +36,7 @@ app.use(globalErrorHandler);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow all origins
+    origin: "https://chatapp-client-beta.vercel.app", // Allow all origins
     methods: ["GET", "POST"],
   },
 });
