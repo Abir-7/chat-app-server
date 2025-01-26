@@ -4,7 +4,7 @@ import sendResponse from "../../../utils/shared/sendResponse";
 import { MessageService } from "./message.service";
 
 // Save a chat message
-export const saveChatMessage = catchAsync(async (req, res) => {
+const saveChatMessage = catchAsync(async (req, res) => {
   const { senderId, chatId, content } = req.body;
 
   const chatMessage = await MessageService.saveChatMessage(
@@ -20,11 +20,14 @@ export const saveChatMessage = catchAsync(async (req, res) => {
     data: chatMessage,
   });
 });
-
 // Get chat messages between two users
-export const getChatMessages = catchAsync(async (req, res) => {
-  const { chatId } = req.query;
-  const messages = await MessageService.getChatMessages(chatId as string);
+const getChatMessages = catchAsync(async (req, res) => {
+  const { chatId, senderId, receiverId } = req.query;
+  const messages = await MessageService.getChatMessages(
+    chatId as string,
+    senderId as string,
+    receiverId as string
+  );
   sendResponse(res, {
     success: true,
     statusCode: 200,

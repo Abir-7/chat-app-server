@@ -26,7 +26,20 @@ const createGroupChat = catchAsync(async (req, res) => {
   });
 });
 
+const getUserGroupChat = catchAsync(async (req, res) => {
+  const user = req.user;
+  const result = await ChatService.getUserGroup(user?.userId);
+
+  sendResponse(res, {
+    data: result,
+    statusCode: 201,
+    success: true,
+    message: "Groups fetched successfully",
+  });
+});
+
 export const ChatController = {
   createOnetoOneChat,
   createGroupChat,
+  getUserGroupChat,
 };

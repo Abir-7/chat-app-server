@@ -9,5 +9,6 @@ router.post(
   ChatController.createOnetoOneChat
 );
 router.post("/create-group", auth("USER"), ChatController.createGroupChat);
+router.get("/get-user-group", auth("USER"), ChatController.getUserGroupChat);
 
 export const ChatRouter = router;

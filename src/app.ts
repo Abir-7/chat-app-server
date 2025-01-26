@@ -5,14 +5,12 @@ import { noRouteFound } from "./app/middleware/noRoute";
 import router from "./app/router";
 import cookieParser from "cookie-parser";
 import http from "http";
-import { Server, Socket } from "socket.io";
-import { JwtHelper } from "./app/utils/shared/jwtHelper";
-import { config } from "./app/config";
-import AppError from "./app/errors/AppError";
-import { IAuthData } from "./app/middleware/Auth/auth.interface";
+import { Server } from "socket.io";
+
 import { Message } from "./app/modules/chat/message/message.model";
-import { Chat } from "./app/modules/chat/chat.model";
+
 import { ChatService } from "./app/modules/chat/chat.service";
+import { IMessage } from "./app/interface/message.interface";
 const app = express();
 
 app.use(express.json());
@@ -32,6 +30,9 @@ app.use("/api", router);
 
 app.use(noRouteFound);
 app.use(globalErrorHandler);
+
+// socket implimentetion
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -43,7 +44,7 @@ const io = new Server(server, {
 const users = new Map();
 
 io.on("connection", (socket) => {
-  console.log("A user connected: " + socket.id);
+  // console.log("A user connected: " + socket.id);
 
   // Store the socket ID when a user connects
   socket.on("register", (userId) => {
@@ -51,24 +52,61 @@ io.on("connection", (socket) => {
     console.log(`User ${userId} connected with socket ID: ${socket.id}`);
   });
 
-  // Handle sending messages
+  // Handle sending messages one to one
   socket.on("sendMessage", async ({ senderId, receiverId, message }) => {
-    console.log(`Message from ${senderId} to ${receiverId}: ${message}`);
+    //  console.log(`Message from ${senderId} to ${receiverId}: ${message}`);
 
     // Get the receiver's socket ID
     const receiverSocketId = users.get(receiverId);
 
-    // If receiver is connected, send the message
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("receiveMessage", { senderId, message });
-      const chat = await ChatService.createOnetoOneChat(senderId, receiverId);
-      console.log(chat._id);
+    const chat = await ChatService.createOnetoOneChat(senderId, receiverId);
+    console.log(chat._id);
+    const res = (await (
       await Message.create({
         chat: chat._id,
         content: message,
         sender: senderId,
+      })
+    ).populate({
+      path: "sender",
+      populate: { path: "customer" },
+    })) as IMessage;
+    console.log(res, "ggg");
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receiveMessage", {
+        sender: { _id: res.sender._id, name: res.sender?.customer.name },
+        receiverId,
+        content: res.content,
       });
     }
+  });
+
+  // Handle sending messages group
+  socket.on("joinGroup", (chat) => {
+    socket.join(chat);
+    console.log(`User ${socket.id} joined group ${chat}`);
+  });
+
+  socket.on("sendMessageToGroup", async (data) => {
+    const { chat, sender, content } = data;
+    console.log(data);
+
+    const res = (await (
+      await Message.create({
+        chat: chat,
+        content,
+        sender,
+      })
+    ).populate({
+      path: "sender",
+      populate: { path: "customer" },
+    })) as IMessage;
+
+    io.to(chat).emit("receiveGroupMessage", {
+      sender: { _id: res.sender._id, name: res.sender?.customer.name },
+      chat,
+      content,
+    });
   });
 
   socket.on("disconnect", () => {

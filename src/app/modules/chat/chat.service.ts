@@ -31,7 +31,17 @@ const createGroupChat = async (data: ICreateGroupChatParams) => {
   return chat;
 };
 
+const getUserGroup = async (userId: string) => {
+  const getChatGroup = await Chat.find({
+    users: { $in: [userId] },
+    isGroup: true,
+  }).populate("users");
+
+  return getChatGroup;
+};
+
 export const ChatService = {
   createOnetoOneChat,
   createGroupChat,
+  getUserGroup,
 };
